@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Movement2D : MonoBehaviour
 {
+    
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
@@ -31,6 +32,18 @@ public class Movement2D : MonoBehaviour
     private bool isWallSliding;
     private float wallSlidingSpeed = 1f;
 
+    private bool wallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingDirE;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private float wallJumpPush = 9.5f;
+
+    [Header("Upgrades")]
+    public bool enableWallJump;
+    
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -50,7 +63,7 @@ public class Movement2D : MonoBehaviour
     {
         if (Mathf.Abs(rb.velocity.x) < maxSpeed) { rb.velocity = new Vector2((horizontal * horizontalSpeed ) + (rb.velocity.x * 0.8f), rb.velocity.y); }
 
-        if ((!isRight && horizontal > 0f) || (isRight && horizontal < 0f)) { Flip(); }
+        if (((!isRight && horizontal > 0f) || (isRight && horizontal < 0f)) && !wallJumping ) { Flip(); }
     }
 
     public void Move(InputAction.CallbackContext context) { horizontal = context.ReadValue<Vector2>().x; }
@@ -82,6 +95,40 @@ public class Movement2D : MonoBehaviour
         }
         else { isWallSliding = false; animator.SetBool("WallSlide", false); }
     }
+
+    public void WallJump(InputAction.CallbackContext context)
+    {
+        if (isWallSliding)
+        {
+            wallJumping = false;
+            wallJumpingCounter = wallJumpingTime;
+            wallJumpingDirection = (transform.rotation.y != 0) ? -1 : 1;
+            wallJumpingDirE = (transform.rotation.y != 0) ? 0 : 180;
+
+            CancelInvoke(nameof(StopWallJump));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+        if (context.performed && wallJumpingCounter > 0f && enableWallJump)
+        {
+            wallJumping = true;
+
+            rb.velocity = new Vector2(wallJumpPush * wallJumpingDirection, jumpVelocity);
+            wallJumpingCounter = 0f;
+        }
+        if (context.canceled && rb.velocity.y > 0 && wallJumping)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
+
+        if (transform.rotation.x != wallJumpingDirE) { Flip(); }
+
+        Invoke(nameof(StopWallJump), wallJumpingDuration);
+    }
+
+    private void StopWallJump() { wallJumping = false; }
     private void Flip()
     {
         isRight = !isRight;
