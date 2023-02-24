@@ -21,7 +21,8 @@ public class Movement2D : MonoBehaviour
     private float horizontal;
 
     [Header("Jump Height")]
-    public float jumpHeight;
+    public float jumpVelocity;
+    public float jumpPhysics;
     private float coyoteTime;
     private float jumpBuffer;
     [SerializeField] private float maxFallSpeed;
@@ -31,9 +32,9 @@ public class Movement2D : MonoBehaviour
     private float wallSlidingSpeed = 1f;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        rb.gravityScale = jumpPhysics;
     }
 
     // Update is called once per frame
@@ -56,7 +57,14 @@ public class Movement2D : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-
+        if (context.performed && IsGrounded())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+        }
+        if (context.canceled && rb.velocity.y > 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
     }
 
     private bool IsGrounded() { return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer); }
