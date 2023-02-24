@@ -1541,9 +1541,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   frictionCoefficent: 0.8
-  horizontalSpeed: 0.5
-  maxSpeed: 4
-  jumpHeight: 0
+  horizontalSpeed: 1
+  maxSpeed: 10
+  jumpVelocity: 10
+  jumpPhysics: 2
   maxFallSpeed: 0
 --- !u!50 &1839030253
 Rigidbody2D:
@@ -1634,7 +1635,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 3
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -1743,12 +1744,12 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1839030252}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+        m_TargetAssemblyTypeName: Movement2D, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
