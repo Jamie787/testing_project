@@ -44,6 +44,7 @@ public class Movement2D : MonoBehaviour
         animator.SetFloat("JumpVel", rb.velocity.y);
 
         WallSlide();
+        Falling();
     }
 
     void FixedUpdate()
@@ -87,4 +88,5 @@ public class Movement2D : MonoBehaviour
         isRight = !isRight;
         transform.rotation = Quaternion.Euler(0, (transform.rotation.y != 0) ? 0 : 180, 0);
     }
-}
+
+    private void Falling() { if (-maxFallSpeed > rb.velocity.y) { rb.velocity = new Vector2(rb.velocity.x, -maxFallSpeed); } }
