@@ -38,7 +38,7 @@ public class Movement2D : MonoBehaviour
     private float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
     private float wallJumpingDuration = 0.4f;
-    private float wallJumpPush = 9.5f;
+    private float wallJumpPush = 15f;
 
     [Header("Upgrades")]
     public bool enableWallJump;
@@ -77,7 +77,7 @@ public class Movement2D : MonoBehaviour
         }
         if (context.canceled && rb.velocity.y > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, -1);
+            rb.velocity = new Vector2(rb.velocity.x, 0);
         }
     }
 
@@ -99,6 +99,7 @@ public class Movement2D : MonoBehaviour
 
     public void WallJump(InputAction.CallbackContext context)
     {
+        Debug.Log(wallJumpingDirection);
         if (isWallSliding)
         {
             wallJumping = false;
@@ -124,7 +125,7 @@ public class Movement2D : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, 0);
         }
 
-        if (transform.rotation.x != wallJumpingDirE) { Flip(); }
+        if (transform.rotation.y != wallJumpingDirE) { Flip(); }
 
         Invoke(nameof(StopWallJump), wallJumpingDuration);
     }

@@ -1811,10 +1811,11 @@ MonoBehaviour:
     m_Bits: 64
   frictionCoefficent: 0.7
   horizontalSpeed: 2
-  maxSpeed: 10
+  maxSpeed: 999
   jumpVelocity: 10
-  jumpPhysics: 2.5
+  jumpPhysics: 3
   maxFallSpeed: 50
+  enableWallJump: 1
 --- !u!50 &1839030253
 Rigidbody2D:
   serializedVersion: 4
