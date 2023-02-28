@@ -1809,13 +1809,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  frictionCoefficent: 0.8
-  horizontalSpeed: 1
+  frictionCoefficent: 0.7
+  horizontalSpeed: 2
   maxSpeed: 10
   jumpVelocity: 10
-  jumpPhysics: 2
-  maxFallSpeed: 0
-  enableWallJump: 0
+  jumpPhysics: 2.5
+  maxFallSpeed: 50
 --- !u!50 &1839030253
 Rigidbody2D:
   serializedVersion: 4

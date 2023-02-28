@@ -57,11 +57,12 @@ public class Movement2D : MonoBehaviour
         animator.SetFloat("JumpVel", rb.velocity.y);
 
         WallSlide();
+        Falling();
     }
 
     void FixedUpdate()
     {
-        if (Mathf.Abs(rb.velocity.x) < maxSpeed) { rb.velocity = new Vector2((horizontal * horizontalSpeed ) + (rb.velocity.x * 0.8f), rb.velocity.y); }
+        if (Mathf.Abs(rb.velocity.x) < maxSpeed) { rb.velocity = new Vector2((horizontal * horizontalSpeed) + (rb.velocity.x * frictionCoefficent), rb.velocity.y); }
 
         if (((!isRight && horizontal > 0f) || (isRight && horizontal < 0f)) && !wallJumping ) { Flip(); }
     }
@@ -76,7 +77,7 @@ public class Movement2D : MonoBehaviour
         }
         if (context.canceled && rb.velocity.y > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity = new Vector2(rb.velocity.x, -1);
         }
     }
 
@@ -86,8 +87,8 @@ public class Movement2D : MonoBehaviour
 
     private void WallSlide()
     {
-        
-        if (!IsGrounded() && IsWalled() && (horizontal != 0f)) 
+
+        if (!IsGrounded() && IsWalled() && (horizontal != 0f))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
@@ -134,4 +135,7 @@ public class Movement2D : MonoBehaviour
         isRight = !isRight;
         transform.rotation = Quaternion.Euler(0, (transform.rotation.y != 0) ? 0 : 180, 0);
     }
+
+    private void Falling() { if (-maxFallSpeed > rb.velocity.y) { rb.velocity = new Vector2(rb.velocity.x, -maxFallSpeed); } }
+
 }
